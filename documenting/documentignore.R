@@ -23,7 +23,7 @@ devtools::check()
 # devtools::load_all()
 # roxygen2::roxygenise()
 
-devtools::install_github("HemingNM/ENMwizard")
+devtools::install_github("HemingNM/spatialMetrics")
 
 # for building windows package
 devtools::build_win()

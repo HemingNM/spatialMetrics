@@ -40,7 +40,7 @@ crs.m <- function(x){
 #' @inheritParams betapart::phylo.beta.pair
 #' @inheritParams betapart::beta.pair
 #' @export
-beta.array <- function(x, index.family="sorensen", tree=F, fwCC){
+beta.array <- function(x, index.family="sorensen", tree=NA, fwCC){
   # print(x)
   x <- apply(x, 3, FUN=as.vector)
   x <- x[stats::complete.cases(x) & fwCC,]
@@ -52,7 +52,7 @@ beta.array <- function(x, index.family="sorensen", tree=F, fwCC){
   } else if(sum(x)==0) {
     return(c(mean_turnover, mean_nestedness, mean_beta))
   } else {
-    if(tree==F){
+    if(is.na(tree)){
       res <- betapart::beta.pair(x, index.family=index.family)
     } else {
       res <- betapart::phylo.beta.pair(x, tree, index.family=index.family)
@@ -83,10 +83,14 @@ beta.array <- function(x, index.family="sorensen", tree=F, fwCC){
 #' @inheritParams raster::writeRaster
 #' @export
 beta.stack <- function(x, radius = 2.8, type = "circle",  
-                       index.family="sorensen", tree=F,
+                       index.family="sorensen", tree=NA,
                        format="GTiff", filename=NULL, overwrite=T,
                        numCores=1) {
-  
+  min.radius <- mean(res(r)*112)
+  if(radius < min.radius) {
+    # radius <- min.radius
+    stop(paste("radius too small to build a focal window. Minimum radius is:", min.radius)) #111.1194*res(x)[2]/(cos(y*(pi/180)))))
+  }
   fw <- raster::focalWeight(x, km2decdeg(radius, x), type=type)
   fw[fw>0] <- 1
   fw[fw==0] <- NA
