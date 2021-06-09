@@ -45,11 +45,16 @@ beta.array <- function(x, index.family="sorensen", tree=NA, fwCC){
   x <- apply(x, 3, FUN=as.vector)
   x <- x[stats::complete.cases(x) & fwCC,]
   
-  mean_turnover <- mean_nestedness <- mean_beta <- NA #numeric(1)
-  
-  if(all(is.na(x))) {
+  if(length(x)) {
     mean_turnover <- mean_nestedness <- mean_beta <- NA
-  } else if(sum(x)==0) {
+    return(c(mean_turnover=mean_turnover, 
+             mean_nestedness=mean_nestedness, 
+             mean_beta=mean_beta))
+  }
+  
+  mean_turnover <- mean_nestedness <- mean_beta <- numeric(1)
+  
+  if(sum(x)==0) {
     return(c(mean_turnover, mean_nestedness, mean_beta))
   } else {
     if(is.na(tree)){
