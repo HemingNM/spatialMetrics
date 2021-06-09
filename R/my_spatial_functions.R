@@ -48,7 +48,7 @@ beta.array <- function(x, index.family="sorensen", tree=NA, fwCC){
   mean_turnover <- mean_nestedness <- mean_beta <- numeric(1)
   
   if(all(is.na(x))) {
-    mean_turnover <- mean_nestedness <- mean_beta <- 0
+    mean_turnover <- mean_nestedness <- mean_beta <- NA
   } else if(sum(x)==0) {
     return(c(mean_turnover, mean_nestedness, mean_beta))
   } else {
