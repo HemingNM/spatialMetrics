@@ -4,7 +4,7 @@
 \alias{beta.array}
 \title{Compute beta diversity on arrays}
 \usage{
-beta.array(x, index.family = "sorensen", tree = F, fwCC)
+beta.array(x, index.family = "sorensen", tree = NA, fwCC)
 }
 \arguments{
 \item{x}{numeric array of with 3 dimensions}

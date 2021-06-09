@@ -9,7 +9,7 @@ beta.stack(
   radius = 2.8,
   type = "circle",
   index.family = "sorensen",
-  tree = F,
+  tree = NA,
   format = "GTiff",
   filename = NULL,
   overwrite = T,
