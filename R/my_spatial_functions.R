@@ -93,9 +93,9 @@ beta.stack <- function(x, radius = 2.8, type = "circle",
   fwCC <- stats::complete.cases(as.vector(fw))
   
   # run
-  if(numCores>1){
+  # if(numCores>1){
     spatial.tools::sfQuickInit(numCores)
-  }
+  # }
   # spatial.tools::sfQuickInit()
   betaR <- spatial.tools::rasterEngine(x=x,
                                        args=list(index.family=index.family, tree=tree, fwCC=fwCC), 
@@ -104,9 +104,9 @@ beta.stack <- function(x, radius = 2.8, type = "circle",
                                        outbands=3,
                                        setMinMax=T,
                                        .packages="betapart")
-  if(numCores>1){
+  # if(numCores>1){
     spatial.tools::sfQuickStop()
-  }
+  # }
   
   names(betaR) <- c("turnover", "nestedness", "beta")
   if(!is.null(filename)){
