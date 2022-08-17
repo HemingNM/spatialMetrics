@@ -1,4 +1,13 @@
 ### Versioning
+
+# run on terminal:
+# git remote set-url origin https://github.com/HemingNM/spatialMetrics.git
+
+
+## Verificar configurações do git e github
+usethis::git_sitrep()
+
+
 ### Ignorar arquivos no git ---------------------------------
 # usethis::use_git_ignore(c("proj_setup/"))
 
