@@ -7,7 +7,7 @@
 beta.spat(
   x,
   fm = NULL,
-  d = 2.8,
+  d = mean(terra::res(terra::rast(x))) * 2,
   type = "circle",
   index.family = "sorensen",
   tree = NA,

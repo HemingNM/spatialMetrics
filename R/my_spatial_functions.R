@@ -1,22 +1,79 @@
 
 ## My spatial functions
 
-#' Convert distance from km to decimal degrees
+#' Convert distance from kilometers to decimal degrees
 #' 
-#' @param dist Numeric. Vector of distances to be converted from km to lat degrees
+#' @param dist Numeric. Vector of distances to be converted from km to 
+#' decimal degrees
 #' @param y Numeric or Extent object, or any object from which an 
-#' Extent object can be extracted. See ?raster::crop for details
+#' Extent object can be extracted. See \code{\link[terra]{crop}} for details. 
+#' Latitude of location where degrees will be converted to kilometers
 #' @export
 km2decdeg <- function(dist, y){
-  if(is.numeric(y)){
-    dist*(cos(y*(pi/180)))/111.1194
-  } else {
-    dist*(cos(mean(c(raster::ymin(y), raster::ymax(y)))*(pi/180)))/111.1194 
-  }
+  y <- y_mean(y)
+  dist/(cos(y*(pi/180)))/111.321
+}
+
+
+#' Convert distance from decimal degrees to kilometers
+#' 
+#' @param deg Numeric. Vector of distances (in degrees) to be converted to
+#' kilometers
+#' @param y Numeric, Extent object, or any object from which an 
+#' Extent object can be extracted. See \code{\link[terra]{crop}} for details. Latitude 
+#' of location where degrees will be converted to kilometers
+#' @export
+decdeg2km <- function(deg, y){
+  y <- y_mean(y)
+  deg*(cos(y*(pi/180)))*111.321
+}
+
+#' Compute avg values of y
+#' 
+#' @param y Numeric or Extent object, or any object from which an 
+#' Extent object can be extracted. See \code{\link[terra]{crop}} for details. 
+#' 
+#' @keywords internal
+y_mean <- function(y){
+  UseMethod("y_mean", y)
+}
+
+#' Compute avg values of y for numeric class
+#' @keywords internal
+y_mean.numeric <- function(y){
+  mean(y)
+}
+
+#' Compute avg values of y for SpatRaster class
+#' @keywords internal
+y_mean.SpatRaster <- function(y){
+  mean(c(terra::ymin(y), terra::ymax(y)))
+}
+
+#' Compute avg values of y for Raster class
+#' @keywords internal
+y_mean.Raster <- function(y){
+  mean(c(raster::ymin(y), raster::ymax(y)))
 }
 
 ##
-crs.m <- function(x){
+crs_m <- function(x){
+  UseMethod("crs_m", x)
+}
+
+crs_m.SpatRaster <- function(x){
+  terra::crs(
+    paste0("+proj=eqdc +units=km", # eqdc \ laea
+           " +lat_1=",
+           mean(terra::ymin(x)),
+           " +lat_2=",
+           mean(terra::ymax(x)),
+           " +lon_0=",
+           mean(c(terra::xmax(x), terra::xmin(x))) )
+  )
+}
+
+crs_m.Raster <- function(x){
   raster::crs(
     paste0("+proj=eqdc +units=km", # eqdc \ laea
            " +lat_1=",
@@ -82,7 +139,7 @@ beta.stack <- function(x, radius = 2.8, type = "circle",
                        index.family="sorensen", tree=NA,
                        format="GTiff", filename=NULL, overwrite=T,
                        numCores=1) {
-  min.radius <- mean(raster::res(x)*112)
+  min.radius <- mean(raster::res(x)*111.321)
   if(radius < min.radius) {
     # radius <- min.radius
     stop(paste("radius too small to build a focal window. Minimum radius is:", min.radius)) #111.1194*res(x)[2]/(cos(y*(pi/180)))))
@@ -94,7 +151,7 @@ beta.stack <- function(x, radius = 2.8, type = "circle",
   
   # run
   # if(numCores>1){
-    spatial.tools::sfQuickInit(numCores)
+  spatial.tools::sfQuickInit(numCores)
   # }
   # spatial.tools::sfQuickInit()
   betaR <- spatial.tools::rasterEngine(x=x,
@@ -105,13 +162,13 @@ beta.stack <- function(x, radius = 2.8, type = "circle",
                                        setMinMax=T,
                                        .packages="betapart")
   # if(numCores>1){
-    spatial.tools::sfQuickStop()
+  spatial.tools::sfQuickStop()
   # }
   
   names(betaR) <- c("turnover", "nestedness", "beta")
   if(!is.null(filename)){
     betaR <- raster::writeRaster(betaR, filename = filename,
-                         overwrite=overwrite, format=format)
+                                 overwrite=overwrite, format=format)
   }
   return(betaR)
 }

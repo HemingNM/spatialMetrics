@@ -55,4 +55,4 @@ usethis::pr_push()
 
 # apagar o branch criado
 usethis::pr_finish()
-# vai mudar para o branch master e apagar o branch 'fun1'
+# vai mudar para o branch master e apagar o branch atual
