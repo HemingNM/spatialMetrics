@@ -53,7 +53,7 @@ beta.vec <- function(x, nspp, index.family="sorensen", tree=NA){
 #' @inheritParams terra::focalMat
 #' @inheritParams terra::writeRaster
 #' @export
-beta.spat <- function(x, fm=NULL, d = 2.8, type = "circle",  
+beta.spat <- function(x, fm=NULL, d = mean(terra::res(terra::rast(x)))*2, type = "circle",  
                        index.family="sorensen", tree=NA,
                        filetype="GTiff", filename=NULL, overwrite=T,
                        numCores=1, ...) {

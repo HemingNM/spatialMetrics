@@ -32,20 +32,20 @@ attachment::att_amend_desc()
 
 
 ###---
-## documentar as funções
-devtools::document()
-
-
-#### Finalizando o fluxo ----
-# verificar se está tudo correto com:
-devtools::check()
-
 # 1. carregamos o pacote testthat
 library(testthat)
 # 2. carregamos todo o pacote
 devtools::load_all()
 # 3. finalmente, rodamos todos os testes
 devtools::test()
+
+
+## documentar as funções
+devtools::document()
+
+#### Finalizando o fluxo ----
+# verificar se está tudo correto com:
+devtools::check()
 
 # reconstruir e reinstalar o pacote com
 devtools::install()
