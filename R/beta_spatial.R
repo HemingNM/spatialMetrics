@@ -18,9 +18,9 @@ beta.vec <- function(x, nspp, index.family="sorensen", tree=NA){
   mean_turnover <- mean_nestedness <- mean_beta <- numeric(1)
   
   if(all(is.na(x))){
-    return(c(NA, NA, NA))
+    return(c(NA, NA, NA, NA))
   } else if(sum(x)==0) {
-    return(c(mean_turnover, mean_nestedness, mean_beta))
+    return(c(mean_turnover, mean_nestedness, mean_beta, mean_nestedness/mean_beta))
   } else {
     if(is.na(tree)){
       res <- betapart::beta.pair(x, index.family=index.family)
@@ -31,7 +31,7 @@ beta.vec <- function(x, nspp, index.family="sorensen", tree=NA){
     mean_nestedness <- mean(res[[2]][lower.tri(res[[2]])], na.rm=T) # mean(as.matrix(res[[2]])[2:length(as.matrix(res[[2]])[,1]),1], na.rm=TRUE)
     mean_beta <- mean(res[[3]][lower.tri(res[[3]])], na.rm=T) # mean(as.matrix(res[[3]])[2:length(as.matrix(res[[3]])[,1]),1], na.rm=TRUE)
   }
-  return(c(mean_turnover, mean_nestedness, mean_beta))
+  return(c(mean_turnover, mean_nestedness, mean_beta, mean_nestedness/mean_beta))
 }
 
 #' Compute beta diversity on spatRast objects
@@ -80,8 +80,8 @@ beta.spat <- function(x, fm=NULL, d = 2.8, type = "circle",
                           beta.vec,
                           index.family=index.family, 
                           tree=tree, nspp=terra::nlyr(x),
-                          na.policy="all")[[1:3]]
-  names(betaR) <- c("turnover", "nestedness", "beta")
+                          na.policy="all")[[1:4]]
+  names(betaR) <- c("turnover", "nestedness", "beta_div", "beta_ratio")
   
   if(!is.null(filename)){
     betaR <- terra::writeRaster(betaR, filename = filename,
