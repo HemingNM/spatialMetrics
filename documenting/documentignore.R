@@ -23,6 +23,12 @@ devtools::check()
 # devtools::load_all()
 # roxygen2::roxygenise()
 
+# Definindo pacotes/dependências automaticamente
+# https://rtask.thinkr.fr/attachment-is-on-cran/
+# https://rtask.thinkr.fr/when-development-starts-with-documentation/
+attachment::att_amend_desc()
+
+
 devtools::install_github("HemingNM/spatialMetrics")
 
 # for building windows package
