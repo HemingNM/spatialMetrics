@@ -6,7 +6,7 @@
 \usage{
 beta.spat(
   x,
-  fm,
+  fm = NULL,
   d = 2.8,
   type = "circle",
   index.family = "sorensen",

@@ -53,10 +53,13 @@ beta.vec <- function(x, nspp, index.family="sorensen", tree=NA){
 #' @inheritParams terra::focalMat
 #' @inheritParams terra::writeRaster
 #' @export
-beta.spat <- function(x, fm, d = 2.8, type = "circle",  
+beta.spat <- function(x, fm=NULL, d = 2.8, type = "circle",  
                        index.family="sorensen", tree=NA,
                        filetype="GTiff", filename=NULL, overwrite=T,
                        numCores=1, ...) {
+  if(!inherits(x, c("SpatRaster"))){
+    x <- terra::rast(x)
+  }
   if(is.null(fm)){
     min.d <- sqrt(prod(terra::res(x))) #mean(res(x)*112)
     if(d < min.d) {
