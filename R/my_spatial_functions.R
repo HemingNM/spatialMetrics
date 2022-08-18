@@ -82,7 +82,7 @@ beta.stack <- function(x, radius = 2.8, type = "circle",
                        index.family="sorensen", tree=NA,
                        format="GTiff", filename=NULL, overwrite=T,
                        numCores=1) {
-  min.radius <- mean(res(x)*112)
+  min.radius <- mean(raster::res(x)*112)
   if(radius < min.radius) {
     # radius <- min.radius
     stop(paste("radius too small to build a focal window. Minimum radius is:", min.radius)) #111.1194*res(x)[2]/(cos(y*(pi/180)))))

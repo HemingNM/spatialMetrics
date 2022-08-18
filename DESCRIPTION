@@ -1,19 +1,19 @@
 Package: spatialMetrics
 Title: Compute Spatial Metrics
-Version: 0.0.0.9000
+Version: 0.0.1.0000
 Authors@R: 
-    person(given = "Neander",
-           family = "Heming",
-           role = c("aut", "cre"),
-           email = "neanderh@yahoo.com.br",
+    person("Neander", "Heming", , "neanderh@yahoo.com.br", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-2461-5045"))
 Description: The package has functions to compute spatial metrics.
 License: GPL-3
+Imports: 
+    betapart,
+    stats,
+    terra
+Suggests:
+    raster,
+    spatial.tools
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
-Imports: 
-    betapart,
-    raster,
-    spatial.tools
+RoxygenNote: 7.2.1
