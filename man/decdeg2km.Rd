@@ -2,9 +2,7 @@
 % Please edit documentation in R/my_spatial_functions.R
 \name{decdeg2km}
 \alias{decdeg2km}
-\title{#' @export
-km2decdeg.numeric <- function(dist, y){
-}}
+\title{Convert distance from decimal degrees to kilometers}
 \usage{
 decdeg2km(deg, y)
 }
@@ -17,15 +15,5 @@ Extent object can be extracted. See \code{\link[terra]{crop}} for details. Latit
 of location where degrees will be converted to kilometers}
 }
 \description{
-#' @export
-km2decdeg.SpatRaster <- function(dist, y){
-dist/(cos(mean(c(terra::ymin(y), terra::ymax(y)))*(pi/180)))/111.321
-}
-}
-\details{
-#' @export
-km2decdeg.Raster <- function(dist, y){
-dist/(cos(mean(c(raster::ymin(y), raster::ymax(y)))*(pi/180)))/111.321
-}
 Convert distance from decimal degrees to kilometers
 }

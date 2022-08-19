@@ -6,6 +6,10 @@
 \usage{
 y_mean(y)
 }
+\arguments{
+\item{y}{Numeric or Extent object, or any object from which an
+Extent object can be extracted. See \code{\link[terra]{crop}} for details.}
+}
 \description{
 Compute avg values of y
 }

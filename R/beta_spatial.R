@@ -13,13 +13,18 @@
 # #' @export
 beta.vec <- function(x, nspp, index.family="sorensen", tree=NA){
   x <- matrix(x, ncol=nspp, byrow = F)
-  x <- x[stats::complete.cases(x),]
+  tofill <- apply(x, 1, function(x){sum(is.na(x))}) #rowSums(x) < nspp
+  tofill <- tofill > 0 & tofill < nspp
+  x[tofill, is.na(x[tofill,])] <- 0
+  x <- x[stats::complete.cases(x),] # maybe replace NAs with 0
   
   mean_turnover <- mean_nestedness <- mean_beta <- numeric(1)
   
   if(all(is.na(x))){
     return(c(NA, NA, NA, NA))
-  } else if(sum(x)==0) {
+  } else if(!inherits(x, "matrix")) {
+    return(c(mean_turnover, mean_nestedness, mean_beta, mean_nestedness/mean_beta))
+  } else if(sum(x, na.rm = T)==0) {
     return(c(mean_turnover, mean_nestedness, mean_beta, mean_nestedness/mean_beta))
   } else {
     if(is.na(tree)){
@@ -27,9 +32,21 @@ beta.vec <- function(x, nspp, index.family="sorensen", tree=NA){
     } else {
       res <- betapart::phylo.beta.pair(x, tree, index.family=index.family)
     }
-    mean_turnover <- mean(res[[1]][lower.tri(res[[1]])], na.rm=T) # mean(as.matrix(res[[1]])[2:length(as.matrix(res[[1]])[,1]),1], na.rm=TRUE) 
-    mean_nestedness <- mean(res[[2]][lower.tri(res[[2]])], na.rm=T) # mean(as.matrix(res[[2]])[2:length(as.matrix(res[[2]])[,1]),1], na.rm=TRUE)
-    mean_beta <- mean(res[[3]][lower.tri(res[[3]])], na.rm=T) # mean(as.matrix(res[[3]])[2:length(as.matrix(res[[3]])[,1]),1], na.rm=TRUE)
+    if(sum(res[[1]], na.rm = T)==0){
+      mean_turnover <- 0     
+    } else {
+      mean_turnover <- mean(res[[1]][lower.tri(res[[1]])], na.rm=T) # mean(as.matrix(res[[1]])[2:length(as.matrix(res[[1]])[,1]),1], na.rm=TRUE) 
+    }
+    if(sum(res[[2]], na.rm = T)==0){
+      mean_nestedness <- 0     
+    } else {
+      mean_nestedness <- mean(res[[2]][lower.tri(res[[2]])], na.rm=T) # mean(as.matrix(res[[2]])[2:length(as.matrix(res[[2]])[,1]),1], na.rm=TRUE)
+    }
+    if(sum(res[[3]], na.rm = T)==0){
+      mean_beta <- 0     
+    } else {
+      mean_beta <- mean(res[[3]][lower.tri(res[[3]])], na.rm=T) # mean(as.matrix(res[[3]])[2:length(as.matrix(res[[3]])[,1]),1], na.rm=TRUE)
+    }
   }
   return(c(mean_turnover, mean_nestedness, mean_beta, mean_nestedness/mean_beta))
 }
