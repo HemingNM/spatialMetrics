@@ -3,5 +3,6 @@
 export(beta.array)
 export(beta.spat)
 export(beta.stack)
+export(beta.temp.spat)
 export(decdeg2km)
 export(km2decdeg)
